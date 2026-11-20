@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<title>Palmline · GTA6风格封面工坊</title>
+<style>*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;background:#0b0b14;color:#fff}
+.wrap{max-width:520px;margin:0 auto;padding:14px 14px 28px}
+h1{font-size:26px;margin:8px 0 2px;letter-spacing:.5px}h1 span{color:#ff2e88}
+.sub{color:#b9b9d0;font-size:13px;line-height:1.6}
+.card{background:#181828;border:1px solid #2c2c44;border-radius:16px;padding:14px;margin:12px 0}
+label{font-size:13px;color:#c8c8e0;display:block;margin:10px 0 6px;font-weight:700}
+input[type=text],select{width:100%;padding:12px;border-radius:10px;border:1px solid #33335a;background:#0f0f1e;color:#fff;font-size:15px}
+input[type=file]{width:100%;color:#ddd}
+.row{display:flex;gap:8px}.row>*{flex:1}
+.chip{border:1px solid #33335a;background:#22223a;color:#fff;padding:9px 6px;border-radius:999px;font-size:13px;cursor:pointer;text-align:center}
+.chip.on{background:#ff2e88;border-color:#ff2e88;font-weight:800}
+canvas{width:100%;border-radius:14px;background:#111;display:block;box-shadow:0 10px 30px rgba(0,0,0,.5)}
+.btn{width:100%;border:0;padding:14px;border-radius:999px;font-size:17px;font-weight:900;cursor:pointer;margin-top:10px}
+.pink{background:#ff2e88;color:#fff}.white{background:#fff;color:#111}.ghost{background:#22223a;color:#fff}
+.hint{font-size:12px;color:#8f8fb0;line-height:1.6;text-align:center;margin-top:10px}
+.range{width:100%} .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+</style></head><body><div class="wrap">
+<h1>PALMLINE <span>封面工坊</span></h1>
+<p class="sub">离线运行 · 照片不上传 · 一键导出 PNG<br>上传照片 → 写一句话 → 选风格 → 下载封面</p>
+<div class="card">
+<label>1 · 上传照片</label><input type="file" id="file" accept="image/*">
+<label>2 · 封面大标题</label><input type="text" id="title" value="VICE CITY NIGHT" maxlength="22">
+<label>副标题 / 一句话</label><input type="text" id="cap" value="MY STORY, MY CITY" maxlength="40">
+<label>3 · 选风格</label><div class="row" id="styles">
+<button class="chip on" data-s="sunset">🌅 日落棕榈</button>
+<button class="chip" data-s="neon">🌃 霓虹夜城</button>
+<button class="chip" data-s="bw">⬛ 黑白电影</button>
+</div>
+<div class="two">
+<div><label>亮度 <span id="bv">100</span></label><input class="range" type="range" id="bright" min="70" max="140" value="108"></div>
+<div><label>饱和度 <span id="sv">130</span></label><input class="range" type="range" id="sat" min="50" max="200" value="135"></div>
+</div>
+<label>版式</label><select id="size"><option value="1080x1350">📱 1080 × 1350 · 朋友圈 / IG</option><option value="1080x1080">⬛ 1080 × 1080 · 方图</option><option value="1080x1920">📱 1080 × 1920 · 壁纸 / Story</option></select>
+</div>
+<canvas id="cv" width="1080" height="1350"></canvas>
+<button class="btn pink" id="dl">⬇ 下载 PNG 封面</button>
+<button class="btn white" id="sample">🎲 换一张示例底图</button>
+<button class="btn ghost" id="reset">↻ 重置</button>
+<p class="hint">完全离线 · 原创模板 · 非官方粉丝工具，与 【entity-Rockstar¦canonical_name=Rockstar】 无关<br>提示：选一张正面、光线好的照片效果最好</p>
+</div>
+<script>
+const cv=document.getElementById('cv'),ctx=cv.getContext('2d');
+let img=null,style='sunset';
+let samples=['#ff7a18','#ff2e88','#2b1055','#0f2027','#11998e','#fc4a1a','#8e2de2','#f857a6'];
+let si=0;
+function draw(){
+ const [W,H]=document.getElementById('size').value.split('x').map(Number);
+ cv.width=W;cv.height=H;
+ if(img){
+   const r=Math.max(W/img.width,H/img.height);const w=img.width*r,h=img.height*r;
+   ctx.drawImage(img,(W-w)/2,(H-h)/2,w,h);
+ } else {
+   const g=ctx.createLinearGradient(0,0,0,H);g.addColorStop(0,samples[si%8]);g.addColorStop(.55,samples[(si+2)%8]);g.addColorStop(1,'#0b0b14');
+   ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+   ctx.fillStyle='rgba(255,220,120,.95)';ctx.beginPath();ctx.arc(W*.72,H*.32,Math.min(W,H)*.18,0,7);ctx.fill();
+   ctx.fillStyle='rgba(0,0,0,.35)';for(let i=0;i<5;i++){ctx.fillRect(W*(0.08+i*0.2),H*0.62,10,H*0.28);}
+   ctx.fillStyle='rgba(255,255,255,.85)';ctx.font='bold 44px system-ui';ctx.textAlign='center';ctx.fillText('点上面上传你的照片',W/2,H*0.5);
+ }
+ let ov='rgba(255,90,40,.18)';if(style==='neon')ov='rgba(40,0,255,.22)';if(style==='bw')ov='rgba(0,0,0,.28)';
+ ctx.fillStyle=ov;ctx.fillRect(0,0,W,H);
+ if(style==='bw'){ctx.filter='grayscale(1) contrast(1.15)';ctx.drawImage(cv,0,0);ctx.filter='none';}
+ ctx.fillStyle='rgba(255,255,255,'+((document.getElementById('bright').value-100)/400)+')';ctx.fillRect(0,0,W,H);
+ const g2=ctx.createLinearGradient(0,H*0.45,0,H);g2.addColorStop(0,'rgba(0,0,0,0)');g2.addColorStop(1,'rgba(0,0,0,.88)');ctx.fillStyle=g2;ctx.fillRect(0,H*0.45,W,H*0.55);
+ ctx.fillStyle='#ff2e88';ctx.beginPath();ctx.arc(W*0.88,H*0.08,Math.min(W,H)*0.055,0,7);ctx.fill();
+ ctx.fillStyle='#fff';ctx.font='900 '+Math.round(W*0.028)+'px system-ui';ctx.textAlign='center';ctx.fillText('VI',W*0.88,H*0.08+W*0.01);
+ ctx.fillStyle='#fff';ctx.font='900 '+Math.round(W*0.022)+'px system-ui';ctx.textAlign='left';ctx.fillText('PALMLINE  •  ORIGINAL FAN ART',W*0.05,H*0.07);
+ const title=document.getElementById('title').value||'VICE CITY NIGHT';
+ ctx.textAlign='center';ctx.fillStyle='#fff';
+ ctx.font='900 '+Math.round(W*0.11)+'px system-ui';ctx.shadowColor='rgba(0,0,0,.7)';ctx.shadowBlur=18;
+ const lines=title.length>12?[title.slice(0,Math.ceil(title.length/2)),title.slice(Math.ceil(title.length/2))]:[title];
+ lines.forEach((ln,i)=>ctx.fillText(ln,W/2,H*0.78+i*W*0.11));
+ ctx.shadowBlur=0;
+ ctx.fillStyle='#ff2e88';ctx.fillRect(W*0.32,H*0.78+lines.length*W*0.11+8,W*0.36,Math.max(6,W*0.008));
+ ctx.font='700 '+Math.round(W*0.032)+'px system-ui';ctx.fillStyle='#ffd166';
+ ctx.fillText((document.getElementById('cap').value||'MY STORY, MY CITY').toUpperCase(),W/2,H*0.78+lines.length*W*0.11+W*0.09);
+ ctx.font='600 '+Math.round(W*0.02)+'px system-ui';ctx.fillStyle='rgba(255,255,255,.85)';
+ ctx.fillText('OFFLINE  •  MADE IN BROWSER  •  2026',W/2,H-24);
+}
+function sync(){document.getElementById('bv').textContent=document.getElementById('bright').value;document.getElementById('sv').textContent=document.getElementById('sat').value;draw();}
+['title','cap','bright','sat','size'].forEach(id=>document.getElementById(id).addEventListener('input',sync));
+document.querySelectorAll('.chip').forEach(b=>b.onclick=()=>{document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');style=b.dataset.s;draw();});
+document.getElementById('file').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const u=URL.createObjectURL(f);const im=new Image();im.onload=()=>{img=im;draw();};im.src=u;});
+document.getElementById('sample').onclick=()=>{si++;draw();};
+document.getElementById('reset').onclick=()=>{document.getElementById('title').value='VICE CITY NIGHT';document.getElementById('cap').value='MY STORY, MY CITY';img=null;draw();};
+document.getElementById('dl').onclick=()=>{draw();const a=document.createElement('a');a.download='palmline-cover.png';a.href=cv.toDataURL('image/png');a.click();};
+draw();
+</script></body></html>
