@@ -1,18 +1,24 @@
+[![make.fun · gta6-cover-art-01](https://make.fun/badge/gta6-cover-art-01.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
+[![rank](https://make.fun/badge/gta6-cover-art-01/ongtianzhi-blip/gta6-cover-art-entry/rank.svg)](https://make.fun/bounty/gta6-cover-art-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
+[![reward](https://make.fun/badge/gta6-cover-art-01/ongtianzhi-blip/gta6-cover-art-entry/reward.svg)](https://make.fun/bounty/gta6-cover-art-01?utm_source=github&utm_medium=readme&utm_campaign=gta6-cover-art-01)
+
 # Vice Type Cover Studio
 
-Vice Type Cover Studio is a browser-based cover maker for creating colorful, GTA-inspired 1080 x 1080 artwork from a photo. It runs entirely in the browser, and no uploaded image is sent to a server.
+Vice Type Cover Studio is a browser-based GTA-inspired cover maker for creating colorful 1080 x 1080 artwork from a photo. Choose a mood and layout, customize the type, and export a PNG. It runs entirely in your browser; your photo is never uploaded.
 
-## Open the app
+## Run locally
 
-From the project folder, start the local static server:
+From the project folder, start the local server:
 
 ```bash
 node serve.ts
 ```
 
-Then open [http://localhost:8080](http://localhost:8080) in a browser.
+Open [http://localhost:8080](http://localhost:8080) in your browser. You can also open `app/index.html` directly; the self-contained app needs no build step or external packages.
 
-You can also open `app/index.html` directly in a browser. The app is self-contained and does not need a build step or external packages.
+## Bounty
+
+This entry is for [make.fun bounty gta6-cover-art-01](https://make.fun/bounty/gta6-cover-art-01).
 
 ## Make a cover
 

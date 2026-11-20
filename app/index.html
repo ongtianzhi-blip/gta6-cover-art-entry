@@ -1,76 +1,88 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Vice Type — Cover Studio</title>
+  <meta name="theme-color" content="#f7f4ee">
+  <title>Vice Type - Cover Studio</title>
   <style>
     :root {
+      color-scheme: light;
       --ink: #18151c;
+      --muted: #77716e;
       --pink: #ff3b92;
-      --cyan: #66d4da;
       --paper: #f7f4ee;
       --line: #d8d2cb;
     }
+
     * { box-sizing: border-box; }
+
     body {
-      margin: 0;
+      min-width: 320px;
       min-height: 100vh;
+      margin: 0;
       color: var(--ink);
       font-family: Inter, "Helvetica Neue", Arial, sans-serif;
       background:
-        radial-gradient(circle at 85% 15%, rgba(255, 59, 146, .08), transparent 28rem),
-        linear-gradient(135deg, #f8f6f1 0%, #eeeae3 100%);
+        radial-gradient(circle at 85% 15%, rgb(255 59 146 / 8%), transparent 28rem),
+        linear-gradient(135deg, #f8f6f1, #eeeae3);
     }
-    button, input, select { font: inherit; }
+
+    button, input { font: inherit; }
+    button { color: inherit; }
+
     .shell {
-      min-height: 100vh;
       display: grid;
-      grid-template-columns: 348px minmax(400px, 760px);
-      justify-content: center;
+      grid-template-columns: 340px minmax(380px, 740px);
       align-items: center;
+      justify-content: center;
       gap: clamp(28px, 5vw, 72px);
+      min-height: 100vh;
       padding: 36px;
     }
-    .panel { width: 348px; }
+
+    .panel { width: 100%; }
+
     .brand {
       display: flex;
       align-items: center;
       gap: 11px;
-      margin-bottom: 29px;
+      margin-bottom: 27px;
       font-size: 12px;
       font-weight: 900;
       letter-spacing: .16em;
       text-transform: uppercase;
     }
+
     .brand-mark {
+      display: grid;
       width: 38px;
       height: 38px;
-      display: grid;
       place-items: center;
       border: 2px solid var(--ink);
       border-radius: 50%;
       background: var(--pink);
       color: #fff;
-      font-family: Georgia, serif;
-      font-size: 21px;
+      font: 900 18px Georgia, serif;
       letter-spacing: -.08em;
       transform: rotate(-8deg);
     }
+
     h1 {
-      margin: 0 0 6px;
       max-width: 330px;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: 44px;
-      line-height: .96;
+      margin: 0 0 7px;
+      font: 900 clamp(34px, 4vw, 46px)/.96 Georgia, "Times New Roman", serif;
       letter-spacing: -.045em;
     }
+
     .lede {
-      margin: 0 0 24px;
-      color: #77716e;
+      margin: 0 0 23px;
+      color: var(--muted);
       font-size: 14px;
     }
+
     .field { margin-top: 15px; }
+
     .field-label {
       display: flex;
       justify-content: space-between;
@@ -80,52 +92,65 @@
       letter-spacing: .12em;
       text-transform: uppercase;
     }
-    .field-label span:last-child { color: #9a9490; }
-    input[type="text"], select {
+
+    .field-label .count { color: #9a9490; }
+
+    .text-input {
       width: 100%;
-      height: 47px;
+      height: 46px;
+      padding: 0 13px;
       border: 1px solid var(--line);
       border-radius: 8px;
       outline: none;
-      background: rgba(255,255,255,.72);
-      color: var(--ink);
-      padding: 0 13px;
+      background: rgb(255 255 255 / 72%);
       transition: border-color .16s, box-shadow .16s;
     }
-    input[type="text"]:focus, select:focus {
+
+    .text-input:focus-visible {
       border-color: var(--pink);
-      box-shadow: 0 0 0 3px rgba(255,59,146,.10);
+      box-shadow: 0 0 0 3px rgb(255 59 146 / 12%);
     }
+
     .upload {
       position: relative;
-      height: 55px;
       display: flex;
+      height: 55px;
       align-items: center;
       gap: 10px;
       overflow: hidden;
+      padding: 8px 10px;
       border: 1px dashed #aaa39d;
       border-radius: 9px;
-      background: rgba(255,255,255,.55);
-      padding: 8px 10px;
+      background: rgb(255 255 255 / 55%);
       cursor: pointer;
     }
+
+    .upload:focus-within {
+      outline: 3px solid rgb(255 59 146 / 24%);
+      outline-offset: 2px;
+    }
+
     .upload input {
       position: absolute;
       inset: 0;
+      width: 100%;
+      height: 100%;
       opacity: 0;
       cursor: pointer;
     }
+
     .upload-icon {
+      display: grid;
       width: 38px;
       height: 38px;
       flex: none;
-      display: grid;
       place-items: center;
       border-radius: 7px;
       background: var(--ink);
       color: #fff;
-      font-size: 20px;
+      font-size: 22px;
     }
+
     .upload-copy { min-width: 0; }
     .upload-copy strong, .upload-copy small {
       display: block;
@@ -135,180 +160,181 @@
     }
     .upload-copy strong { font-size: 13px; }
     .upload-copy small { color: #918a84; font-size: 11px; }
-    .preset-row {
+
+    .choice-row {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 8px;
     }
-    .preset {
+
+    .mood {
       height: 58px;
+      padding: 5px;
       border: 2px solid transparent;
       border-radius: 8px;
-      cursor: pointer;
-      padding: 5px;
       background: #ddd;
+      cursor: pointer;
     }
-    .preset.active { border-color: var(--ink); }
-    .preset span {
-      height: 100%;
+
+    .mood[aria-pressed="true"], .layout[aria-pressed="true"] {
+      border-color: var(--ink);
+      box-shadow: 0 0 0 1px #fff inset;
+    }
+
+    .mood-swatch {
       display: block;
+      height: 100%;
       border-radius: 4px;
     }
-    .preset[data-preset="sunset"] span {
+
+    [data-mood="sunset"] .mood-swatch {
       background: linear-gradient(145deg, #fe96a7 0 38%, #7355ad 38% 68%, #1a1b38 68%);
     }
-    .preset[data-preset="neon"] span {
+    [data-mood="neon"] .mood-swatch {
       background: linear-gradient(145deg, #2b185f 0 35%, #f0438e 35% 58%, #ffb38c 58%);
     }
-    .preset[data-preset="tropical"] span {
+    [data-mood="tropical"] .mood-swatch {
       background: linear-gradient(145deg, #d4ef92 0 38%, #61c2ba 38% 68%, #2b6c79 68%);
     }
+
+    .layout-row {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 6px;
+    }
+
+    .layout {
+      min-width: 0;
+      height: 55px;
+      padding: 4px;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      background: rgb(255 255 255 / 72%);
+      color: var(--muted);
+      cursor: pointer;
+    }
+
+    .layout[aria-pressed="true"] {
+      border-width: 2px;
+      color: var(--ink);
+      background: #fff;
+    }
+
+    .layout-preview {
+      display: block;
+      height: 27px;
+      border-radius: 3px;
+      background: #ddd;
+    }
+    [data-layout="classic"] .layout-preview { background: linear-gradient(to bottom, transparent 58%, #24243b 58%); }
+    [data-layout="split"] .layout-preview { background: linear-gradient(90deg, #24243b 50%, #ef96ae 50%); }
+    [data-layout="ribbon"] .layout-preview { background: linear-gradient(135deg, transparent 68%, #ef96ae 68%); }
+    [data-layout="frame"] .layout-preview { border: 5px solid #ef96ae; background: #24243b; }
+    [data-layout="stack"] .layout-preview { background: linear-gradient(to bottom, #ef96ae 0 28%, #24243b 28% 68%, #ef96ae 68%); }
+    [data-layout="minimal"] .layout-preview { background: linear-gradient(to bottom, #bcdacf 0 72%, #24243b 72%); }
+
+    .layout-name {
+      display: block;
+      margin-top: 4px;
+      font-size: 8px;
+      font-weight: 900;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
     .range-row {
       display: grid;
       grid-template-columns: 1fr 44px;
       align-items: center;
       gap: 10px;
     }
-    input[type="range"] {
-      width: 100%;
-      accent-color: var(--pink);
-    }
-    .range-value {
-      color: #77716e;
-      font-size: 12px;
-      font-weight: 800;
-      text-align: right;
-    }
-    .layout-row {
+
+    input[type="range"] { width: 100%; accent-color: var(--pink); }
+    .range-value { color: var(--muted); font-size: 12px; font-weight: 800; text-align: right; }
+
+    .actions {
       display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      gap: 6px;
+      grid-template-columns: 1fr 80px;
+      gap: 8px;
+      margin-top: 18px;
     }
-    .layout {
-      min-width: 0;
-      height: 54px;
-      border: 1px solid var(--line);
-      border-radius: 7px;
-      background: rgba(255,255,255,.72);
-      color: #77716e;
-      cursor: pointer;
-      padding: 4px;
-    }
-    .layout.active {
-      border: 2px solid var(--ink);
-      color: var(--ink);
-      background: #fff;
-    }
-    .layout-name {
-      display: block;
-      margin-top: 5px;
-      font-size: 8px;
-      font-weight: 900;
-      text-align: center;
-      text-transform: uppercase;
-    }
-    .layout span.preview {
-      display: block;
-      height: 27px;
-      border-radius: 3px;
-      background: #ddd;
-    }
-    .layout[data-layout="classic"] .preview {
-      background: linear-gradient(to bottom, transparent 58%, #24243b 58%);
-    }
-    .layout[data-layout="split"] .preview {
-      background: linear-gradient(90deg, #24243b 50%, #ef96ae 50%);
-    }
-    .layout[data-layout="ribbon"] .preview {
-      background: linear-gradient(135deg, transparent 68%, #ef96ae 68%);
-    }
-    .layout[data-layout="frame"] .preview {
-      border: 5px solid #ef96ae;
-      background: #24243b;
-    }
-    .layout[data-layout="stack"] .preview {
-      background: linear-gradient(to bottom, #ef96ae 0 28%, #24243b 28% 68%, #ef96ae 68%);
-    }
-    .layout[data-layout="minimal"] .preview {
-      background: linear-gradient(to bottom, #bcdacf 0 72%, #24243b 72%);
-    }
-    .actions { display: grid; grid-template-columns: 1fr 48px; gap: 8px; margin-top: 18px; }
+
     .export, .reset {
-      height: 49px;
+      height: 48px;
       border: 0;
       border-radius: 8px;
-      cursor: pointer;
       font-weight: 900;
+      cursor: pointer;
     }
+
     .export { background: var(--ink); color: #fff; }
     .export:hover { background: var(--pink); }
-    .reset {
-      background: #fff;
-      border: 1px solid var(--line);
-      color: var(--ink);
-      font-size: 18px;
+    .reset { border: 1px solid var(--line); background: #fff; }
+    button:focus-visible { outline: 3px solid rgb(255 59 146 / 45%); outline-offset: 2px; }
+
+    .status {
+      min-height: 16px;
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 11px;
     }
+
     .stage {
       position: relative;
-      display: grid;
-      place-items: center;
       width: 100%;
       aspect-ratio: 1;
     }
-    canvas {
-      display: block;
-      width: 100%;
-      height: 100%;
-      border-radius: 3px;
-      box-shadow: 0 24px 60px rgba(51,41,44,.18), 0 3px 12px rgba(51,41,44,.10);
-    }
+
     .stage::before {
-      content: "";
       position: absolute;
       z-index: -1;
       width: 92%;
       height: 92%;
       background: var(--pink);
-      transform: translate(12px, 12px) rotate(1.5deg);
+      content: "";
       opacity: .12;
+      transform: translate(12px, 12px) rotate(1.5deg);
     }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: 100%;
+      border-radius: 3px;
+      box-shadow: 0 24px 60px rgb(51 41 44 / 18%), 0 3px 12px rgb(51 41 44 / 10%);
+    }
+
     @media (max-width: 900px) {
-      .shell {
-        grid-template-columns: 300px minmax(320px, 1fr);
-        gap: 24px;
-        padding: 24px;
-      }
-      .panel { width: 300px; }
-      h1 { font-size: 38px; }
+      .shell { grid-template-columns: 300px minmax(320px, 1fr); gap: 24px; padding: 24px; }
     }
+
     @media (max-width: 700px) {
-      body { min-height: 100dvh; }
       .shell {
         display: flex;
-        flex-direction: column-reverse;
         min-height: 100dvh;
-        padding: 10px 12px 22px;
+        flex-direction: column-reverse;
         gap: 14px;
+        padding: 10px 12px 22px;
       }
       .panel { width: min(100%, 520px); }
       .brand { margin-bottom: 12px; }
       .brand-mark { width: 34px; height: 34px; }
-      h1 { max-width: none; font-size: 28px; }
+      h1 { max-width: none; font-size: 30px; }
       .lede { margin-bottom: 10px; }
       .field { margin-top: 10px; }
-      input[type="text"], select { height: 44px; }
+      .text-input { height: 43px; }
       .upload { height: 52px; }
       .layout-row { gap: 5px; }
       .layout { height: 52px; }
       .actions {
         position: sticky;
-        bottom: 8px;
         z-index: 5;
+        bottom: 8px;
         margin: 14px -2px 0;
         padding: 7px;
-        border: 1px solid rgba(216,210,203,.85);
+        border: 1px solid rgb(216 210 203 / 85%);
         border-radius: 12px;
-        background: rgba(247,244,238,.94);
+        background: rgb(247 244 238 / 94%);
         backdrop-filter: blur(12px);
       }
       .stage {
@@ -323,71 +349,72 @@
 </head>
 <body>
   <main class="shell">
-    <section class="panel" aria-label="Cover controls">
-      <div class="brand"><span class="brand-mark">VT</span> Vice Type / Cover Studio</div>
-      <h1>Make it look iconic.</h1>
+    <section class="panel" aria-labelledby="app-title">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">VT</span> Vice Type / Cover Studio</div>
+      <h1 id="app-title">Make it look iconic.</h1>
       <p class="lede">Build a vivid cover from any photo.</p>
 
       <div class="field">
-        <div class="field-label"><span>01 / Photo</span><span>PNG or JPG</span></div>
-        <label class="upload">
+        <div class="field-label"><span>01 / Photo</span><span class="count">PNG, JPG, WebP</span></div>
+        <label class="upload" for="photo">
           <input id="photo" type="file" accept="image/png,image/jpeg,image/webp">
-          <span class="upload-icon">＋</span>
+          <span class="upload-icon" aria-hidden="true">+</span>
           <span class="upload-copy"><strong id="fileName">Choose a photo</strong><small>or use the default scene</small></span>
         </label>
       </div>
 
       <div class="field">
-        <div class="field-label"><span>02 / Title</span><span id="titleCount">11</span></div>
-        <input id="title" type="text" maxlength="22" value="VICE, BABY">
+        <label class="field-label" for="title"><span>02 / Title</span><span class="count" id="titleCount">0 / 22</span></label>
+        <input class="text-input" id="title" type="text" maxlength="22" value="VICE, BABY">
       </div>
 
       <div class="field">
-        <div class="field-label"><span>03 / Caption</span><span id="captionCount">20</span></div>
-        <input id="caption" type="text" maxlength="42" value="THE SUN NEVER STOPS">
+        <label class="field-label" for="caption"><span>03 / Caption</span><span class="count" id="captionCount">0 / 42</span></label>
+        <input class="text-input" id="caption" type="text" maxlength="42" value="THE SUN NEVER STOPS">
       </div>
 
       <div class="field">
         <div class="field-label"><span>04 / Mood</span></div>
-        <div class="preset-row" role="radiogroup" aria-label="Color mood">
-          <button class="preset active" data-preset="sunset" role="radio" aria-checked="true" title="Sunset"><span></span></button>
-          <button class="preset" data-preset="neon" role="radio" aria-checked="false" title="Neon"><span></span></button>
-          <button class="preset" data-preset="tropical" role="radio" aria-checked="false" title="Tropical"><span></span></button>
+        <div class="choice-row" role="group" aria-label="Color mood">
+          <button class="mood" type="button" data-mood="sunset" aria-label="Sunset mood" aria-pressed="true"><span class="mood-swatch"></span></button>
+          <button class="mood" type="button" data-mood="neon" aria-label="Neon mood" aria-pressed="false"><span class="mood-swatch"></span></button>
+          <button class="mood" type="button" data-mood="tropical" aria-label="Tropical mood" aria-pressed="false"><span class="mood-swatch"></span></button>
         </div>
       </div>
 
       <div class="field">
         <div class="field-label"><span>05 / Layout</span></div>
-        <div class="layout-row" role="radiogroup" aria-label="Cover layout">
-          <button class="layout active" data-layout="classic" role="radio" aria-checked="true" title="Classic"><span class="preview"></span><span class="layout-name">Classic</span></button>
-          <button class="layout" data-layout="split" role="radio" aria-checked="false" title="Split"><span class="preview"></span><span class="layout-name">Split</span></button>
-          <button class="layout" data-layout="ribbon" role="radio" aria-checked="false" title="Ribbon"><span class="preview"></span><span class="layout-name">Ribbon</span></button>
-          <button class="layout" data-layout="frame" role="radio" aria-checked="false" title="Frame"><span class="preview"></span><span class="layout-name">Frame</span></button>
-          <button class="layout" data-layout="stack" role="radio" aria-checked="false" title="Stack"><span class="preview"></span><span class="layout-name">Stack</span></button>
-          <button class="layout" data-layout="minimal" role="radio" aria-checked="false" title="Minimal"><span class="preview"></span><span class="layout-name">Minimal</span></button>
+        <div class="layout-row" role="group" aria-label="Cover layout">
+          <button class="layout" type="button" data-layout="classic" aria-pressed="true" aria-label="Classic layout"><span class="layout-preview"></span><span class="layout-name">Classic</span></button>
+          <button class="layout" type="button" data-layout="split" aria-pressed="false" aria-label="Split layout"><span class="layout-preview"></span><span class="layout-name">Split</span></button>
+          <button class="layout" type="button" data-layout="ribbon" aria-pressed="false" aria-label="Ribbon layout"><span class="layout-preview"></span><span class="layout-name">Ribbon</span></button>
+          <button class="layout" type="button" data-layout="frame" aria-pressed="false" aria-label="Frame layout"><span class="layout-preview"></span><span class="layout-name">Frame</span></button>
+          <button class="layout" type="button" data-layout="stack" aria-pressed="false" aria-label="Stack layout"><span class="layout-preview"></span><span class="layout-name">Stack</span></button>
+          <button class="layout" type="button" data-layout="minimal" aria-pressed="false" aria-label="Minimal layout"><span class="layout-preview"></span><span class="layout-name">Minimal</span></button>
         </div>
       </div>
 
       <div class="field">
         <div class="field-label"><span>06 / Fine tune</span></div>
-        <div class="range-row">
+        <label class="range-row">
           <input id="textSize" type="range" min="70" max="140" value="100" aria-label="Text size">
           <span class="range-value" id="textSizeValue">100%</span>
-        </div>
-        <div class="range-row" style="margin-top:8px">
+        </label>
+        <label class="range-row" style="margin-top: 8px">
           <input id="photoZoom" type="range" min="100" max="200" value="100" aria-label="Photo zoom">
           <span class="range-value" id="photoZoomValue">100%</span>
-        </div>
+        </label>
       </div>
 
       <div class="actions">
-        <button id="download" class="export">Download PNG</button>
-        <button id="reset" class="reset" title="Reset" aria-label="Reset">↺</button>
+        <button id="download" class="export" type="button">Download PNG</button>
+        <button id="reset" class="reset" type="button">Reset</button>
       </div>
+      <p class="status" id="status" role="status" aria-live="polite"></p>
     </section>
 
     <section class="stage" aria-label="Cover preview">
-      <canvas id="cover" width="1080" height="1080"></canvas>
+      <canvas id="cover" width="1080" height="1080" aria-label="Your cover art preview"></canvas>
     </section>
   </main>
 
@@ -398,66 +425,65 @@
     const captionInput = document.getElementById("caption");
     const photoInput = document.getElementById("photo");
     const fileName = document.getElementById("fileName");
+    const status = document.getElementById("status");
     const textSizeInput = document.getElementById("textSize");
     const photoZoomInput = document.getElementById("photoZoom");
     let photo = null;
     let mood = "sunset";
     let layout = "classic";
+    let imageRequest = 0;
 
-    function roundedRect(x, y, w, h, r) {
+    function roundedRect(x, y, width, height, radius) {
       ctx.beginPath();
-      ctx.roundRect(x, y, w, h, r);
+      ctx.roundRect(x, y, width, height, radius);
     }
 
     function drawDefaultScene() {
-      const sky = ctx.createLinearGradient(0, 0, 0, 1080);
+      const sky = ctx.createLinearGradient(0, 0, 0, canvas.height);
       sky.addColorStop(0, "#f7a4ad");
       sky.addColorStop(.42, "#c871a8");
       sky.addColorStop(.72, "#6b5291");
       sky.addColorStop(1, "#20233e");
       ctx.fillStyle = sky;
-      ctx.fillRect(0, 0, 1080, 1080);
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      ctx.save();
-      ctx.translate(760, 315);
       ctx.fillStyle = "#ffdac2";
       ctx.beginPath();
-      ctx.arc(0, 0, 150, 0, Math.PI * 2);
+      ctx.arc(760, 315, 150, 0, Math.PI * 2);
       ctx.fill();
-      ctx.restore();
 
       ctx.fillStyle = "rgba(34,30,67,.38)";
       ctx.beginPath();
       ctx.moveTo(0, 620);
-      for (let x = 0; x <= 1080; x += 140) {
+      for (let x = 0; x <= canvas.width; x += 140) {
         ctx.lineTo(x, 620 - (Math.abs(x - 540) < 300 ? 70 : 28));
       }
-      ctx.lineTo(1080, 1080);
-      ctx.lineTo(0, 1080);
+      ctx.lineTo(canvas.width, canvas.height);
+      ctx.lineTo(0, canvas.height);
       ctx.fill();
 
       ctx.fillStyle = "#17172b";
-      ctx.fillRect(0, 650, 1080, 430);
+      ctx.fillRect(0, 650, canvas.width, 430);
       for (let i = 0; i < 8; i++) {
         const x = 20 + i * 145;
+        ctx.fillStyle = "#17172b";
         ctx.fillRect(x, 650 - (i % 3) * 45, 100, 430);
         ctx.fillStyle = i % 2 ? "#f9be8e" : "#77ccd2";
         for (let y = 700; y < 860; y += 55) {
           ctx.fillRect(x + 18, y, 18, 24);
           ctx.fillRect(x + 58, y, 18, 24);
         }
-        ctx.fillStyle = "#17172b";
       }
 
       ctx.fillStyle = "#101126";
-      ctx.fillRect(0, 830, 1080, 250);
+      ctx.fillRect(0, 830, canvas.width, 250);
       ctx.strokeStyle = "rgba(255,190,170,.65)";
       ctx.lineWidth = 5;
       ctx.beginPath();
       ctx.moveTo(0, 900);
-      ctx.lineTo(1080, 900);
+      ctx.lineTo(canvas.width, 900);
       ctx.moveTo(540, 830);
-      ctx.lineTo(540, 1080);
+      ctx.lineTo(540, canvas.height);
       ctx.stroke();
     }
 
@@ -466,58 +492,58 @@
         drawDefaultScene();
         return;
       }
-      const zoom = Number(photoZoomInput.value) / 100;
-      const scale = Math.max(canvas.width / photo.width, canvas.height / photo.height) * zoom;
-      const w = photo.width * scale;
-      const h = photo.height * scale;
-      ctx.drawImage(photo, (1080 - w) / 2, (1080 - h) / 2, w, h);
+      const scale = Math.max(canvas.width / photo.width, canvas.height / photo.height)
+        * Number(photoZoomInput.value) / 100;
+      const width = photo.width * scale;
+      const height = photo.height * scale;
+      ctx.drawImage(photo, (canvas.width - width) / 2, (canvas.height - height) / 2, width, height);
     }
 
     function applyMood() {
+      const colors = {
+        sunset: ["rgba(255,158,167,.88)", "rgba(255,93,154,.48)", "rgba(48,49,111,.72)"],
+        neon: ["rgba(77,24,168,.78)", "rgba(255,58,157,.66)", "rgba(22,174,190,.62)"],
+        tropical: ["rgba(207,245,167,.75)", "rgba(89,206,188,.70)", "rgba(31,102,125,.76)"],
+      }[mood];
+      const tint = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      tint.addColorStop(0, colors[0]);
+      tint.addColorStop(.55, colors[1]);
+      tint.addColorStop(1, colors[2]);
       ctx.save();
       ctx.globalCompositeOperation = "soft-light";
-      if (mood === "sunset") {
-        const g = ctx.createLinearGradient(0, 0, 1080, 1080);
-        g.addColorStop(0, "rgba(255,158,167,.88)");
-        g.addColorStop(.55, "rgba(255,93,154,.48)");
-        g.addColorStop(1, "rgba(48,49,111,.72)");
-        ctx.fillStyle = g;
-      } else if (mood === "neon") {
-        const g = ctx.createLinearGradient(0, 0, 1080, 1080);
-        g.addColorStop(0, "rgba(77,24,168,.78)");
-        g.addColorStop(.55, "rgba(255,58,157,.66)");
-        g.addColorStop(1, "rgba(22,174,190,.62)");
-        ctx.fillStyle = g;
-      } else {
-        const g = ctx.createLinearGradient(0, 0, 1080, 1080);
-        g.addColorStop(0, "rgba(207,245,167,.75)");
-        g.addColorStop(.55, "rgba(89,206,188,.70)");
-        g.addColorStop(1, "rgba(31,102,125,.76)");
-        ctx.fillStyle = g;
-      }
-      ctx.fillRect(0, 0, 1080, 1080);
+      ctx.fillStyle = tint;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
       ctx.restore();
 
-      const shade = ctx.createLinearGradient(0, 500, 0, 1080);
+      const shade = ctx.createLinearGradient(0, 500, 0, canvas.height);
       shade.addColorStop(0, "rgba(10,8,28,0)");
       shade.addColorStop(.62, "rgba(10,8,28,.12)");
       shade.addColorStop(1, "rgba(10,8,28,.92)");
       ctx.fillStyle = shade;
-      ctx.fillRect(0, 0, 1080, 1080);
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
     }
 
-    function fitText(text, maxWidth, startSize) {
+    function fitText(text, maxWidth, startSize, family = "Georgia, serif") {
       let size = startSize;
-      ctx.font = `900 italic ${size}px Georgia, serif`;
-      while (ctx.measureText(text).width > maxWidth && size > 60) {
-        size -= 4;
-        ctx.font = `900 italic ${size}px Georgia, serif`;
+      ctx.font = `900 italic ${size}px ${family}`;
+      while (ctx.measureText(text).width > maxWidth && size > 22) {
+        size -= 2;
+        ctx.font = `900 italic ${size}px ${family}`;
       }
       return size;
     }
 
+    function drawLabel(text, x, y, maxWidth, fontSize, options = {}) {
+      const { align = "center", color = "#fff", family = "Georgia, serif", italic = true } = options;
+      const size = fitText(text, maxWidth, fontSize, family);
+      ctx.textAlign = align;
+      ctx.fillStyle = color;
+      ctx.font = `900 ${italic ? "italic " : ""}${size}px ${family}`;
+      ctx.fillText(text, x, y, maxWidth);
+    }
+
     function drawCover() {
-      ctx.clearRect(0, 0, 1080, 1080);
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
       drawPhoto();
       applyMood();
 
@@ -541,28 +567,22 @@
       ctx.fillText("VI", 972, 103);
       ctx.restore();
 
-      const title = titleInput.value.trim() || "VICE, BABY";
-      const words = (captionInput.value.trim() || "THE SUN NEVER STOPS").toUpperCase();
+      const title = titleInput.value.trim().toUpperCase() || "VICE, BABY";
+      const caption = captionInput.value.trim().toUpperCase() || "THE SUN NEVER STOPS";
+      const textScale = Number(textSizeInput.value) / 100;
 
       if (layout === "classic") {
         ctx.save();
-        ctx.textAlign = "center";
-        ctx.fillStyle = "#fff";
         ctx.shadowColor = "rgba(12,7,27,.42)";
         ctx.shadowBlur = 18;
         ctx.shadowOffsetY = 8;
-        const titleSize = fitText(title.toUpperCase(), 930, 152 * Number(textSizeInput.value) / 100);
-        ctx.font = `900 italic ${titleSize}px Georgia, serif`;
-        ctx.fillText(title.toUpperCase(), 540, 845);
+        drawLabel(title, 540, 845, 930, 152 * textScale);
         ctx.restore();
         ctx.save();
         ctx.fillStyle = "#ff91bf";
         roundedRect(248, 875, 584, 62, 31);
         ctx.fill();
-        ctx.fillStyle = "#211831";
-        ctx.textAlign = "center";
-        ctx.font = "900 25px Arial, sans-serif";
-        ctx.fillText(words, 540, 915);
+        drawLabel(caption, 540, 915, 540, 25, { color: "#211831", family: "Arial, sans-serif", italic: false });
         ctx.restore();
       } else if (layout === "split") {
         ctx.save();
@@ -570,14 +590,8 @@
         ctx.fillRect(0, 610, 460, 470);
         ctx.fillStyle = "#ff91bf";
         ctx.fillRect(460, 610, 12, 470);
-        ctx.textAlign = "left";
-        ctx.fillStyle = "#fff";
-        const titleSize = fitText(title.toUpperCase(), 390, 112 * Number(textSizeInput.value) / 100);
-        ctx.font = `900 italic ${titleSize}px Georgia, serif`;
-        ctx.fillText(title.toUpperCase(), 54, 795);
-        ctx.fillStyle = "#ff91bf";
-        ctx.font = "900 23px Arial, sans-serif";
-        ctx.fillText(words, 54, 858);
+        drawLabel(title, 54, 795, 390, 112 * textScale, { align: "left" });
+        drawLabel(caption, 54, 858, 390, 23, { align: "left", color: "#ff91bf", family: "Arial, sans-serif", italic: false });
         ctx.restore();
       } else if (layout === "ribbon") {
         ctx.save();
@@ -585,66 +599,41 @@
         ctx.rotate(-.055);
         ctx.fillStyle = "#ff4a9a";
         ctx.fillRect(-470, -66, 940, 132);
-        ctx.fillStyle = "#fff";
-        ctx.textAlign = "center";
-        const titleSize = fitText(title.toUpperCase(), 860, 118 * Number(textSizeInput.value) / 100);
-        ctx.font = `900 italic ${titleSize}px Georgia, serif`;
-        ctx.fillText(title.toUpperCase(), 0, 22);
+        drawLabel(title, 0, 22, 860, 118 * textScale);
         ctx.restore();
         ctx.save();
         ctx.fillStyle = "rgba(20,16,35,.78)";
         roundedRect(330, 900, 420, 54, 27);
         ctx.fill();
-        ctx.fillStyle = "#fff";
-        ctx.textAlign = "center";
-        ctx.font = "900 22px Arial, sans-serif";
-        ctx.fillText(words, 540, 936);
+        drawLabel(caption, 540, 936, 390, 22, { family: "Arial, sans-serif", italic: false });
         ctx.restore();
       } else if (layout === "frame") {
         ctx.save();
+        ctx.fillStyle = "rgba(18,15,34,.58)";
+        ctx.fillRect(58, 195, 964, 780);
         ctx.strokeStyle = "#ff91bf";
         ctx.lineWidth = 18;
         ctx.strokeRect(58, 195, 964, 780);
-        ctx.fillStyle = "rgba(18,15,34,.58)";
-        ctx.fillRect(58, 195, 964, 780);
-        ctx.fillStyle = "#fff";
-        ctx.textAlign = "center";
-        const titleSize = fitText(title.toUpperCase(), 820, 132 * Number(textSizeInput.value) / 100);
-        ctx.font = `900 italic ${titleSize}px Georgia, serif`;
-        ctx.fillText(title.toUpperCase(), 540, 650);
-        ctx.fillStyle = "#ff91bf";
-        ctx.font = "900 24px Arial, sans-serif";
-        ctx.fillText(words, 540, 710);
+        drawLabel(title, 540, 650, 820, 132 * textScale);
+        drawLabel(caption, 540, 710, 820, 24, { color: "#ff91bf", family: "Arial, sans-serif", italic: false });
         ctx.restore();
       } else if (layout === "stack") {
         ctx.save();
         ctx.fillStyle = "rgba(20,16,35,.92)";
-        ctx.fillRect(0, 650, 1080, 430);
+        ctx.fillRect(0, 650, canvas.width, 430);
         ctx.fillStyle = "#ff91bf";
         ctx.fillRect(74, 704, 180, 10);
-        ctx.fillStyle = "#fff";
-        ctx.textAlign = "left";
-        ctx.font = "900 24px Arial, sans-serif";
-        ctx.fillText(words, 74, 750);
-        const titleSize = fitText(title.toUpperCase(), 930, 122 * Number(textSizeInput.value) / 100);
-        ctx.font = `900 italic ${titleSize}px Georgia, serif`;
-        ctx.fillText(title.toUpperCase(), 74, 895);
+        drawLabel(caption, 74, 750, 930, 24, { align: "left", family: "Arial, sans-serif", italic: false });
+        drawLabel(title, 74, 895, 930, 122 * textScale, { align: "left" });
         ctx.restore();
       } else {
         ctx.save();
-        ctx.fillStyle = "#fff";
-        ctx.textAlign = "left";
-        const titleSize = fitText(title.toUpperCase(), 930, 104 * Number(textSizeInput.value) / 100);
-        ctx.font = `900 italic ${titleSize}px Georgia, serif`;
-        ctx.fillText(title.toUpperCase(), 72, 798);
+        drawLabel(title, 72, 798, 930, 104 * textScale, { align: "left" });
         ctx.fillStyle = "#ff91bf";
         ctx.fillRect(72, 828, 102, 8);
         ctx.fillStyle = "#211831";
         ctx.fillRect(72, 852, 936, 76);
-        ctx.fillStyle = "#fff";
-        ctx.textAlign = "left";
-        ctx.font = "900 23px Arial, sans-serif";
-        ctx.fillText(words, 100, 902);
+        drawLabel(caption, 100, 902, 880, 23, { align: "left", family: "Arial, sans-serif", italic: false });
         ctx.restore();
       }
 
@@ -659,83 +648,89 @@
     }
 
     function syncCounts() {
-      document.getElementById("titleCount").textContent = titleInput.value.length;
-      document.getElementById("captionCount").textContent = captionInput.value.length;
+      document.getElementById("titleCount").textContent = `${titleInput.value.length} / 22`;
+      document.getElementById("captionCount").textContent = `${captionInput.value.length} / 42`;
     }
 
-    titleInput.addEventListener("input", () => { syncCounts(); drawCover(); });
-    captionInput.addEventListener("input", () => { syncCounts(); drawCover(); });
+    function setPressed(buttons, selected) {
+      buttons.forEach(button => button.setAttribute("aria-pressed", String(button === selected)));
+    }
+
+    titleInput.addEventListener("input", () => {
+      syncCounts();
+      drawCover();
+    });
+    captionInput.addEventListener("input", () => {
+      syncCounts();
+      drawCover();
+    });
 
     photoInput.addEventListener("change", () => {
       const file = photoInput.files[0];
       if (!file) return;
+      const request = ++imageRequest;
       fileName.textContent = file.name;
+      status.textContent = "Loading photo...";
       const url = URL.createObjectURL(file);
       const image = new Image();
       image.onload = () => {
-        photo = image;
         URL.revokeObjectURL(url);
+        if (request !== imageRequest) return;
+        photo = image;
+        status.textContent = "";
         drawCover();
+      };
+      image.onerror = () => {
+        URL.revokeObjectURL(url);
+        if (request !== imageRequest) return;
+        photoInput.value = "";
+        fileName.textContent = "Choose a photo";
+        status.textContent = "That image could not be opened. Try a PNG, JPG, or WebP.";
       };
       image.src = url;
     });
 
-    document.querySelectorAll(".preset").forEach(button => {
+    document.querySelectorAll(".mood").forEach(button => {
       button.addEventListener("click", () => {
-        document.querySelectorAll(".preset").forEach(item => {
-          item.classList.remove("active");
-          item.setAttribute("aria-checked", "false");
-        });
-        button.classList.add("active");
-        button.setAttribute("aria-checked", "true");
-        mood = button.dataset.preset;
+        mood = button.dataset.mood;
+        setPressed(document.querySelectorAll(".mood"), button);
         drawCover();
       });
     });
 
     document.querySelectorAll(".layout").forEach(button => {
       button.addEventListener("click", () => {
-        document.querySelectorAll(".layout").forEach(item => {
-          item.classList.remove("active");
-          item.setAttribute("aria-checked", "false");
-        });
-        button.classList.add("active");
-        button.setAttribute("aria-checked", "true");
         layout = button.dataset.layout;
+        setPressed(document.querySelectorAll(".layout"), button);
         drawCover();
       });
     });
 
     textSizeInput.addEventListener("input", () => {
-      document.getElementById("textSizeValue").textContent = textSizeInput.value + "%";
+      document.getElementById("textSizeValue").textContent = `${textSizeInput.value}%`;
       drawCover();
     });
-
     photoZoomInput.addEventListener("input", () => {
-      document.getElementById("photoZoomValue").textContent = photoZoomInput.value + "%";
+      document.getElementById("photoZoomValue").textContent = `${photoZoomInput.value}%`;
       drawCover();
     });
 
     document.getElementById("reset").addEventListener("click", () => {
+      imageRequest++;
       titleInput.value = "VICE, BABY";
       captionInput.value = "THE SUN NEVER STOPS";
       photoInput.value = "";
       photo = null;
       fileName.textContent = "Choose a photo";
+      status.textContent = "";
       mood = "sunset";
       layout = "classic";
       textSizeInput.value = "100";
       photoZoomInput.value = "100";
       document.getElementById("textSizeValue").textContent = "100%";
       document.getElementById("photoZoomValue").textContent = "100%";
-      document.querySelectorAll(".preset").forEach((item, index) => {
-        item.classList.toggle("active", index === 0);
-        item.setAttribute("aria-checked", index === 0 ? "true" : "false");
-      });
-      document.querySelectorAll(".layout").forEach((item, index) => {
-        item.classList.toggle("active", index === 0);
-        item.setAttribute("aria-checked", index === 0 ? "true" : "false");
-      });
+      setPressed(document.querySelectorAll(".mood"), document.querySelector('[data-mood="sunset"]'));
+      setPressed(document.querySelectorAll(".layout"), document.querySelector('[data-layout="classic"]'));
       syncCounts();
       drawCover();
     });
