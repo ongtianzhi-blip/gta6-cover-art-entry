@@ -34,3 +34,4 @@ If no photo is selected, the app uses a built-in illustrated city scene. Use the
 ## Export PNG
 
 Press **Download PNG** to save the finished 1080 x 1080 cover as `vice-type-cover.png`.
+Round 4 update: main title font-size set to 40px.
